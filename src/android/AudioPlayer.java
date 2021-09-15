@@ -381,7 +381,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
     /**
      * Check if Audio is playing.
      */
-    public void isPlaying() {
+    public boolean isPlaying() {
         return this.state == STATE.MEDIA_RUNNING && this.player != null;
     }
 
