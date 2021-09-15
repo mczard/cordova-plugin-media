@@ -175,6 +175,21 @@ Media.prototype.getDuration = function () {
 };
 
 /**
+ * Check is playing audio file.
+ * The Audio is playing or stopped.
+ *
+ * @return      true when playing otherwise false.
+ */
+ Media.prototype.getDuration = function () {
+    try {
+        return !this.node.paused;
+    } catch (err) {
+        Media.onStatus(this.id, Media.MEDIA_ERROR, err);
+        return false;
+    }
+};
+
+/**
  * Get position of audio.
  */
 Media.prototype.getCurrentPosition = function (success, fail) {

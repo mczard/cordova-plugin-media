@@ -379,6 +379,13 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
     }
 
     /**
+     * Check if Audio is playing.
+     */
+    public void isPlaying() {
+        return this.state == STATE.MEDIA_RUNNING && this.player != null;
+    }
+
+    /**
      * Stop playing the audio file.
      */
     public void stopPlaying() {

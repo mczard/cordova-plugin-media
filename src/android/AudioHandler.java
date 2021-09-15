@@ -345,6 +345,18 @@ public class AudioHandler extends CordovaPlugin {
     }
 
     /**
+     * Check if audio is playing.
+     */
+    public void isPlayingAudio(String id) {
+        AudioPlayer audio = this.players.get(id);
+        if (audio != null) {
+            return audio.isPlaying();
+        }
+
+        return false;
+    }
+
+    /**
      * Stop playing the audio file.
      * @param id				The id of the audio player
      */
