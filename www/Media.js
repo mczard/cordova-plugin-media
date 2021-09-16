@@ -49,7 +49,7 @@ var Media = function (src, successCallback, errorCallback, statusCallback) {
     this.statusCallback = statusCallback;
     this._duration = -1;
     this._position = -1;
-    this._isPlaing = false;
+    this._isPlaying = false;
     exec(null, this.errorCallback, 'Media', 'create', [this.id, this.src]);
 };
 
@@ -226,7 +226,7 @@ Media.prototype.getCurrentAmplitude = function (success, fail) {
  * Get amplitude of audio.
  */
  Media.prototype.isPlaying = function () {
-   return this._isPlaing;
+   return this._isPlaying;
 };
 
 /**
