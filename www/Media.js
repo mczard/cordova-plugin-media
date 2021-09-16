@@ -49,6 +49,7 @@ var Media = function (src, successCallback, errorCallback, statusCallback) {
     this.statusCallback = statusCallback;
     this._duration = -1;
     this._position = -1;
+    this._isPlaing = false;
     exec(null, this.errorCallback, 'Media', 'create', [this.id, this.src]);
 };
 
@@ -224,16 +225,8 @@ Media.prototype.getCurrentAmplitude = function (success, fail) {
 /**
  * Get amplitude of audio.
  */
- Media.prototype.isPlaying = function (success, fail) {
-    exec(
-        function (p) {
-            success(p);
-        },
-        fail,
-        'Media',
-        'isPlayingAudio',
-        [this.id]
-    );
+ Media.prototype.isPlaying = function () {
+   return media._isPlaing;
 };
 
 /**
@@ -258,6 +251,8 @@ Media.onStatus = function (id, msgType, value) {
                     media.successCallback();
                 }
             }
+
+            media._isPlaying = value === Media.MEDIA_RUNNING;
             break;
         case Media.MEDIA_DURATION:
             media._duration = value;
