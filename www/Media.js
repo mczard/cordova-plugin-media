@@ -226,7 +226,7 @@ Media.prototype.getCurrentAmplitude = function (success, fail) {
  * Get amplitude of audio.
  */
  Media.prototype.isPlaying = function () {
-   return media._isPlaing;
+   return this._isPlaing;
 };
 
 /**
