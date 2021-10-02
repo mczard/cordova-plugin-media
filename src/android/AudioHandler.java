@@ -62,7 +62,7 @@ public class AudioHandler extends CordovaPlugin {
     HashMap<String, AudioPlayer> players;  // Audio player object
     ArrayList<AudioPlayer> pausedForPhone; // Audio players that were paused when phone call came in
     ArrayList<AudioPlayer> pausedForFocus; // Audio players that were paused when focus was lost
-    private MusicControls musicControls = null; // Music controls object
+    public MusicControls musicControls = null; // Music controls object
     private int origVolumeStream = -1;
     private CallbackContext messageChannel;
 
@@ -294,6 +294,7 @@ public class AudioHandler extends CordovaPlugin {
      * @param id				The id of the audio player
      */
     private boolean release(String id) {
+        this.musicControls.destroy();
         AudioPlayer audio = players.remove(id);
         if (audio == null) {
             return false;

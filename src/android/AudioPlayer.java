@@ -418,6 +418,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
     public void onCompletion(MediaPlayer player) {
         LOG.d(LOG_TAG, "on completion is calling stopped");
         this.setState(STATE.MEDIA_STOPPED);
+        this.handler.musicControls.updateIsPlaying(false);
     }
 
     /**
@@ -536,6 +537,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
         this.destroy();
         // Send error notification to JavaScript
         sendErrorStatus(arg1);
+        this.handler.musicControls.updateIsPlaying(false);
 
         return false;
     }
