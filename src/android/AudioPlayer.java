@@ -89,6 +89,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
     private LinkedList<String> tempFiles = null; // Temporary recording file name
     private String tempFile = null;
 
+    private MusicControls musicControls = null; // Music controls object
     private MediaPlayer player = null;      // Audio player object
     private boolean prepareOnly = true;     // playback after file prepare flag
     private int seekOnPrepared = 0;     // seek to this location once media is prepared
@@ -99,11 +100,12 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
      * @param handler           The audio handler object
      * @param id                The id of this audio player
      */
-    public AudioPlayer(AudioHandler handler, String id, String file) {
+    public AudioPlayer(AudioHandler handler, String id, String file, MusicControls musicControls) {
         this.handler = handler;
         this.id = id;
         this.audioFile = file;
         this.tempFiles = new LinkedList<String>();
+        this.musicControls = musicControls;
     }
 
     private String generateTempFile() {

@@ -32,6 +32,7 @@ var mediaObjects = {};
  *
  * @constructor
  * @param src                   The file name or url to play
+ * @param notificationConfig    The configuration of notification
  * @param successCallback       The callback to be called when the file is done playing or recording.
  *                                  successCallback()
  * @param errorCallback         The callback to be called if there is an error.
@@ -39,19 +40,64 @@ var mediaObjects = {};
  * @param statusCallback        The callback to be called when media status has changed.
  *                                  statusCallback(int statusCode) - OPTIONAL
  */
-var Media = function (src, successCallback, errorCallback, statusCallback) {
-    argscheck.checkArgs('sFFF', 'Media', arguments);
+var Media = function (cfg, successCallback, errorCallback, statusCallback) {
+    argscheck.checkArgs('AFFF', 'Media', arguments);
     this.id = utils.createUUID();
     mediaObjects[this.id] = this;
-    this.src = src;
+    this.src = cfg[0];
     this.successCallback = successCallback;
     this.errorCallback = errorCallback;
     this.statusCallback = statusCallback;
     this._duration = -1;
     this._position = -1;
     this._isPlaying = false;
-    exec(null, this.errorCallback, 'Media', 'create', [this.id, this.src]);
+    this.notificationConfig = prepareNotificationConfig(cfg[1]);
+
+    let args = [];
+    
+    if (cordova.platformId === 'ios') {
+        args = [this.id, this.src];
+    } else {
+        args = [this.id, this.src, this.notificationConfig];
+    }
+
+    exec(null, this.errorCallback, 'Media', 'create', args);
 };
+
+function prepareNotificationConfig(notificationConfig) {
+    data = {...notificationConfig};
+    data.artist = !isUndefined(data.artist) ? data.artist : "";
+    data.track = !isUndefined(data.track) ? data.track : "";
+    data.album = !isUndefined(data.album) ? data.album : "";
+    data.cover = !isUndefined(data.cover) ? data.cover : "";
+    data.ticker = !isUndefined(data.ticker) ? data.ticker : "";
+    data.duration = !isUndefined(data.duration) ? data.duration : 0;
+    data.elapsed = !isUndefined(data.elapsed) ? data.elapsed : 0;
+    data.isPlaying = !isUndefined(data.isPlaying) ? data.isPlaying : true;
+    data.hasPrev = !isUndefined(data.hasPrev) ? data.hasPrev : true;
+    data.hasNext = !isUndefined(data.hasNext) ? data.hasNext : true;
+    data.hasPlay = !isUndefined(data.hasPlay) ? data.hasPlay : true;
+    data.hasPause = !isUndefined(data.hasPause) ? data.hasPause : true;
+    data.hasSkipForward = !isUndefined(data.hasSkipForward) ? data.hasSkipForward : false;
+    data.hasSkipBackward = !isUndefined(data.hasSkipBackward) ? data.hasSkipBackward : false;
+    data.hasScrubbing = !isUndefined(data.hasScrubbing) ? data.hasScrubbing : false;
+    data.skipForwardInterval = !isUndefined(data.skipForwardInterval) ? data.skipForwardInterval : 0;
+    data.skipBackwardInterval = !isUndefined(data.skipBackwardInterval) ? data.skipBackwardInterval : 0;
+    data.hasClose = !isUndefined(data.hasClose) ? data.hasClose : false;
+    data.dismissable = !isUndefined(data.dismissable) ? data.dismissable : false;
+    data.playIcon = !isUndefined(data.playIcon) ? data.playIcon : "";
+    data.pauseIcon = !isUndefined(data.pauseIcon) ? data.pauseIcon : "";
+    data.prevIcon = !isUndefined(data.prevIcon) ? data.prevIcon : "";
+    data.nextIcon = !isUndefined(data.nextIcon) ? data.nextIcon : "";
+    data.closeIcon = !isUndefined(data.closeIcon) ? data.closeIcon : "";
+    data.notificationIcon = !isUndefined(data.notificationIcon) ? data.notificationIcon : "";
+
+    return data;
+}
+
+function isUndefined(val) {
+    return val === undefined;
+}
 
 // Media messages
 Media.MEDIA_STATE = 1;
@@ -65,6 +111,8 @@ Media.MEDIA_STARTING = 1;
 Media.MEDIA_RUNNING = 2;
 Media.MEDIA_PAUSED = 3;
 Media.MEDIA_STOPPED = 4;
+Media.MEDIA_NEXT = 101;
+Media.MEDIA_PREV = 102;
 Media.MEDIA_MSG = ['None', 'Starting', 'Running', 'Paused', 'Stopped'];
 
 // "static" function to return existing objs.
@@ -117,6 +165,15 @@ Media.prototype.seekTo = function (milliseconds) {
 Media.prototype.pause = function () {
     exec(null, this.errorCallback, 'Media', 'pausePlayingAudio', [this.id]);
 };
+
+/**
+ * Change notification image.
+ */
+Media.prototype.updateImage = function (filePath) {
+    if (cordova.platformId !== 'ios') {
+        exec(null, this.errorCallback, 'Media', 'updateImageAudio', [filePath]);
+    }
+}
 
 /**
  * Get duration of an audio file.
@@ -264,6 +321,16 @@ Media.onStatus = function (id, msgType, value) {
             break;
         case Media.MEDIA_POSITION:
             media._position = Number(value);
+            break;
+        case Media.MEDIA_NEXT:
+            if (media.statusCallback) {
+                media.statusCallback('music-controls-next');
+            }
+            break;
+        case Media.MEDIA_PREV:
+            if (media.statusCallback) {
+                media.statusCallback('music-controls-previous');
+            }
             break;
         default:
             if (console.error) {

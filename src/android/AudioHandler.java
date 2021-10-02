@@ -42,6 +42,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaWebView;
+
 /**
  * This class called by CordovaActivity to play and record audio.
  * The file can be local or over a network using http.
@@ -59,6 +62,7 @@ public class AudioHandler extends CordovaPlugin {
     HashMap<String, AudioPlayer> players;  // Audio player object
     ArrayList<AudioPlayer> pausedForPhone; // Audio players that were paused when phone call came in
     ArrayList<AudioPlayer> pausedForFocus; // Audio players that were paused when focus was lost
+    private MusicControls musicControls = null; // Music controls object
     private int origVolumeStream = -1;
     private CallbackContext messageChannel;
 
@@ -71,6 +75,9 @@ public class AudioHandler extends CordovaPlugin {
 
     private String recordId;
     private String fileUriStr;
+
+	public String playerId;
+	private String filePath;
 
     /**
      * Constructor.
@@ -120,6 +127,9 @@ public class AudioHandler extends CordovaPlugin {
         else if (action.equals("stopRecordingAudio")) {
             this.stopRecordingAudio(args.getString(0), true);
         }
+        else if (action.equals("updateImageAudio")) {
+            this.musicControls.updateCover(args.getString(0));
+        }
         else if (action.equals("pauseRecordingAudio")) {
             this.stopRecordingAudio(args.getString(0), false);
         }
@@ -135,16 +145,23 @@ public class AudioHandler extends CordovaPlugin {
             } catch (IllegalArgumentException e) {
                 fileUriStr = target;
             }
-            this.startPlayingAudio(args.getString(0), FileHelper.stripFileProtocol(fileUriStr));
+
+            this.playerId = args.getString(0);
+            this.filePath = FileHelper.stripFileProtocol(fileUriStr);
+
+            this.startPlayingAudio(this.playerId, this.filePath);
+            this.musicControls.updateIsPlaying(true);
         }
         else if (action.equals("seekToAudio")) {
             this.seekToAudio(args.getString(0), args.getInt(1));
         }
         else if (action.equals("pausePlayingAudio")) {
             this.pausePlayingAudio(args.getString(0));
+            this.musicControls.updateIsPlaying(false);
         }
         else if (action.equals("stopPlayingAudio")) {
             this.stopPlayingAudio(args.getString(0));
+            this.musicControls.updateIsPlaying(false);
         } else if (action.equals("setVolume")) {
            try {
                this.setVolume(args.getString(0), Float.parseFloat(args.getString(1)));
@@ -164,6 +181,7 @@ public class AudioHandler extends CordovaPlugin {
         else if (action.equals("create")) {
             String id = args.getString(0);
             String src = FileHelper.stripFileProtocol(args.getString(1));
+            this.musicControls.create(args);
             getOrCreatePlayer(id, src);
         }
         else if (action.equals("release")) {
@@ -199,6 +217,9 @@ public class AudioHandler extends CordovaPlugin {
             audio.destroy();
         }
         this.players.clear();
+
+        this.musicControls.onDestroy();
+		super.onDestroy();
     }
 
     /**
@@ -207,6 +228,13 @@ public class AudioHandler extends CordovaPlugin {
     @Override
     public void onReset() {
         onDestroy();
+    }
+
+    @Override
+	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        super.initialize(cordova, webView);
+        this.musicControls = new MusicControls(this.cordova, this);
+        this.musicControls.initialize(cordova, webView);
     }
 
     /**
@@ -255,7 +283,7 @@ public class AudioHandler extends CordovaPlugin {
             if (players.isEmpty()) {
                 onFirstPlayerCreated();
             }
-            ret = new AudioPlayer(this, id, file);
+            ret = new AudioPlayer(this, id, file, this.musicControls);
             players.put(id, ret);
         }
         return ret;
@@ -316,7 +344,19 @@ public class AudioHandler extends CordovaPlugin {
      * @param file				The name of the audio file.
      */
     public void startPlayingAudio(String id, String file) {
-        AudioPlayer audio = getOrCreatePlayer(id, file);
+        AudioPlayer audio;
+
+        LOG.d("MusicControls startPlayingAudio: ", "id = " + id + " file = " + file);
+
+        if (id == null) {
+            LOG.d("MusicControls startPlayingAudio backup: ", "id = " + this.playerId + " file = " + this.filePath);
+            audio = getOrCreatePlayer(this.playerId, this.filePath);
+        }
+        else 
+        {
+            audio = getOrCreatePlayer(id, file);
+        }
+
         audio.startPlaying(file);
         getAudioFocus();
     }
@@ -338,7 +378,16 @@ public class AudioHandler extends CordovaPlugin {
      * @param id				The id of the audio player
      */
     public void pausePlayingAudio(String id) {
-        AudioPlayer audio = this.players.get(id);
+        AudioPlayer audio;
+
+        if (id == null) {
+            audio = this.players.get(this.playerId);
+        }
+        else 
+        {
+            audio = this.players.get(id);
+        }
+
         if (audio != null) {
             audio.pausePlaying();
         }
@@ -361,7 +410,16 @@ public class AudioHandler extends CordovaPlugin {
      * @param id				The id of the audio player
      */
     public void stopPlayingAudio(String id) {
-        AudioPlayer audio = this.players.get(id);
+        AudioPlayer audio;
+
+        if (id == null) {
+            audio = this.players.get(this.playerId);
+        }
+        else 
+        {
+            audio = this.players.get(id);
+        }
+
         if (audio != null) {
             audio.stopPlaying();
         }
