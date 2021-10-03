@@ -149,12 +149,10 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 					case "music-controls-pause":
 						// this.cb.success("{\"message\": \"music-controls-media-button-pause\"}");
 						this.musicControls.handler.pausePlayingAudio(null);
-						this.musicControls.updateIsPlaying(false);
 						break;
 					case "music-controls-play":
 						// this.cb.success("{\"message\": \"music-controls-media-button-play\"}");
 						this.musicControls.handler.startPlayingAudio(null, null);
-						this.musicControls.updateIsPlaying(true);
 						break;
 					case "music-controls-previous":
 						// this.cb.success("{\"message\": \"music-controls-media-button-previous\"}");

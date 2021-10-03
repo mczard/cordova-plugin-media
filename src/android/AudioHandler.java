@@ -149,19 +149,16 @@ public class AudioHandler extends CordovaPlugin {
             this.playerId = args.getString(0);
             this.filePath = FileHelper.stripFileProtocol(fileUriStr);
 
-            this.startPlayingAudio(this.playerId, this.filePath);
-            this.musicControls.updateIsPlaying(true);
+            this.startPlayingAudio(this.playerId, this.filePath);   
         }
         else if (action.equals("seekToAudio")) {
             this.seekToAudio(args.getString(0), args.getInt(1));
         }
         else if (action.equals("pausePlayingAudio")) {
             this.pausePlayingAudio(args.getString(0));
-            this.musicControls.updateIsPlaying(false);
         }
         else if (action.equals("stopPlayingAudio")) {
             this.stopPlayingAudio(args.getString(0));
-            this.musicControls.updateIsPlaying(false);
         } else if (action.equals("setVolume")) {
            try {
                this.setVolume(args.getString(0), Float.parseFloat(args.getString(1)));
@@ -175,6 +172,11 @@ public class AudioHandler extends CordovaPlugin {
         }
         else if (action.equals("getDurationAudio")) {
             float f = this.getDurationAudio(args.getString(0), args.getString(1));
+            callbackContext.sendPluginResult(new PluginResult(status, f));
+            return true;
+        }
+        else if (action.equals("isPlayingAudio")) {
+            boolean f = this.isPlayingAudio(args.getString(0));
             callbackContext.sendPluginResult(new PluginResult(status, f));
             return true;
         }
@@ -283,7 +285,7 @@ public class AudioHandler extends CordovaPlugin {
             if (players.isEmpty()) {
                 onFirstPlayerCreated();
             }
-            ret = new AudioPlayer(this, id, file, this.musicControls);
+            ret = new AudioPlayer(this, id, file);
             players.put(id, ret);
         }
         return ret;
@@ -359,6 +361,13 @@ public class AudioHandler extends CordovaPlugin {
         }
 
         audio.startPlaying(file);
+        getAudioFocus();
+    }
+
+    public void reinitializeAudio() {
+        this.players.remove(this.playerId);
+
+        AudioPlayer audio = getOrCreatePlayer(this.playerId, this.filePath);
         getAudioFocus();
     }
 

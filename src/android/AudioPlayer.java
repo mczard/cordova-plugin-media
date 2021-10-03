@@ -100,12 +100,11 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
      * @param handler           The audio handler object
      * @param id                The id of this audio player
      */
-    public AudioPlayer(AudioHandler handler, String id, String file, MusicControls musicControls) {
+    public AudioPlayer(AudioHandler handler, String id, String file) {
         this.handler = handler;
         this.id = id;
         this.audioFile = file;
         this.tempFiles = new LinkedList<String>();
-        this.musicControls = musicControls;
     }
 
     private String generateTempFile() {
@@ -346,6 +345,8 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
         } else {
             this.prepareOnly = false;
         }
+
+        this.handler.musicControls.updateIsPlaying(true);
     }
 
     /**
@@ -378,6 +379,8 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
             LOG.d(LOG_TAG, "AudioPlayer Error: pausePlaying() called during invalid state: " + this.state.ordinal());
             sendErrorStatus(MEDIA_ERR_NONE_ACTIVE);
         }
+
+        this.handler.musicControls.updateIsPlaying(false);
     }
 
     /**
@@ -401,6 +404,8 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
             LOG.d(LOG_TAG, "AudioPlayer Error: stopPlaying() called during invalid state: " + this.state.ordinal());
             sendErrorStatus(MEDIA_ERR_NONE_ACTIVE);
         }
+
+        this.handler.musicControls.updateIsPlaying(false);
     }
 
     /**
@@ -419,6 +424,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
         LOG.d(LOG_TAG, "on completion is calling stopped");
         this.setState(STATE.MEDIA_STOPPED);
         this.handler.musicControls.updateIsPlaying(false);
+        this.handler.reinitializeAudio();
     }
 
     /**
