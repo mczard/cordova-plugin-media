@@ -33,7 +33,7 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 
 	public void stopListening(){
 		if (this.cb != null){
-			this.cb.success("{\"message\": \"music-controls-stop-listening\" }");
+			this.cb.success("{\"message\": \"audio-music-controls-stop-listening\" }");
 			this.cb = null;
 		}
 	}
@@ -48,19 +48,19 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 				int state = intent.getIntExtra("state", -1);
 				switch (state) {
 					case 0:
-						// this.cb.success("{\"message\": \"music-controls-headset-unplugged\"}");
+						// this.cb.success("{\"message\": \"audio-music-controls-headset-unplugged\"}");
 						this.cb = null;
 						this.musicControls.unregisterMediaButtonEvent();
 						break;
 					case 1:
-						// this.cb.success("{\"message\": \"music-controls-headset-plugged\"}");
+						// this.cb.success("{\"message\": \"audio-music-controls-headset-plugged\"}");
 						this.cb = null;
 						this.musicControls.registerMediaButtonEvent();
 						break;
 					default:
 						break;
 				}
-			} else if (message.equals("music-controls-media-button")){
+			} else if (message.equals("audio-music-controls-media-button")){
 				// Media button
 				KeyEvent event = (KeyEvent) intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -68,65 +68,65 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 					int keyCode = event.getKeyCode();
 					switch (keyCode) {
 						case KeyEvent.KEYCODE_MEDIA_NEXT:
-							// this.cb.success("{\"message\": \"music-controls-media-button-next\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-next\"}");
 							this.sendStatusChange(NEXT_MEDIA, null, null);
 							break;
 						case KeyEvent.KEYCODE_MEDIA_PAUSE:
-							// this.cb.success("{\"message\": \"music-controls-media-button-pause\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-pause\"}");
 							this.musicControls.handler.pausePlayingAudio(null);
 							break;
 						case KeyEvent.KEYCODE_MEDIA_PLAY:
-							// this.cb.success("{\"message\": \"music-controls-media-button-play\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-play\"}");
 							this.musicControls.handler.startPlayingAudio(null, null);
 							break;
 						case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-							// this.cb.success("{\"message\": \"music-controls-media-button-play-pause\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-play-pause\"}");
 							break;
 						case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-							// this.cb.success("{\"message\": \"music-controls-media-button-previous\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-previous\"}");
 							this.sendStatusChange(PREV_MEDIA, null, null);
 							break;
 						case KeyEvent.KEYCODE_MEDIA_STOP:
-							// this.cb.success("{\"message\": \"music-controls-media-button-stop\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-stop\"}");
 							break;
 						case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-							// this.cb.success("{\"message\": \"music-controls-media-button-fast-forward\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-fast-forward\"}");
 							break;
 						case KeyEvent.KEYCODE_MEDIA_REWIND:
-							// this.cb.success("{\"message\": \"music-controls-media-button-rewind\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-rewind\"}");
 							break;
 						case KeyEvent.KEYCODE_MEDIA_SKIP_BACKWARD:
-							// this.cb.success("{\"message\": \"music-controls-media-button-skip-backward\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-skip-backward\"}");
 							break;
 						case KeyEvent.KEYCODE_MEDIA_SKIP_FORWARD:
-							// this.cb.success("{\"message\": \"music-controls-media-button-skip-forward\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-skip-forward\"}");
 							break;
 						case KeyEvent.KEYCODE_MEDIA_STEP_BACKWARD:
-							// this.cb.success("{\"message\": \"music-controls-media-button-step-backward\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-step-backward\"}");
 							break;
 						case KeyEvent.KEYCODE_MEDIA_STEP_FORWARD:
-							// this.cb.success("{\"message\": \"music-controls-media-button-step-forward\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-step-forward\"}");
 							break;
 						case KeyEvent.KEYCODE_META_LEFT:
-							// this.cb.success("{\"message\": \"music-controls-media-button-meta-left\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-meta-left\"}");
 							break;
 						case KeyEvent.KEYCODE_META_RIGHT:
-							// this.cb.success("{\"message\": \"music-controls-media-button-meta-right\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-meta-right\"}");
 							break;
 						case KeyEvent.KEYCODE_MUSIC:
-							// this.cb.success("{\"message\": \"music-controls-media-button-music\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-music\"}");
 							break;
 						case KeyEvent.KEYCODE_VOLUME_UP:
-							// this.cb.success("{\"message\": \"music-controls-media-button-volume-up\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-volume-up\"}");
 							break;
 						case KeyEvent.KEYCODE_VOLUME_DOWN:
-							// this.cb.success("{\"message\": \"music-controls-media-button-volume-down\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-volume-down\"}");
 							break;
 						case KeyEvent.KEYCODE_VOLUME_MUTE:
-							// this.cb.success("{\"message\": \"music-controls-media-button-volume-mute\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-volume-mute\"}");
 							break;
 						case KeyEvent.KEYCODE_HEADSETHOOK:
-							// this.cb.success("{\"message\": \"music-controls-media-button-headset-hook\"}");
+							// this.cb.success("{\"message\": \"audio-music-controls-media-button-headset-hook\"}");
 							break;
 						default:
 							// this.cb.success("{\"message\": \"" + message + "\"}");
@@ -134,28 +134,28 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 					}
 					this.cb = null;
 				}
-			} else if (message.equals("music-controls-destroy")){
+			} else if (message.equals("audio-music-controls-destroy")){
 				// Close Button
-				// this.cb.success("{\"message\": \"music-controls-destroy\"}");
+				// this.cb.success("{\"message\": \"audio-music-controls-destroy\"}");
 				this.cb = null;
 				this.musicControls.destroyPlayerNotification();
 			} else {
 				LOG.d("MusicControls onReceive: ", message);
 				switch (message) {
-					case "music-controls-next":
-						// this.cb.success("{\"message\": \"music-controls-media-button-next\"}");
+					case "audio-music-controls-next":
+						// this.cb.success("{\"message\": \"audio-music-controls-media-button-next\"}");
 						this.sendStatusChange(NEXT_MEDIA, null, null);
 						break;
-					case "music-controls-pause":
-						// this.cb.success("{\"message\": \"music-controls-media-button-pause\"}");
+					case "audio-music-controls-pause":
+						// this.cb.success("{\"message\": \"audio-music-controls-media-button-pause\"}");
 						this.musicControls.handler.pausePlayingAudio(null);
 						break;
-					case "music-controls-play":
-						// this.cb.success("{\"message\": \"music-controls-media-button-play\"}");
+					case "audio-music-controls-play":
+						// this.cb.success("{\"message\": \"audio-music-controls-media-button-play\"}");
 						this.musicControls.handler.startPlayingAudio(null, null);
 						break;
-					case "music-controls-previous":
-						// this.cb.success("{\"message\": \"music-controls-media-button-previous\"}");
+					case "audio-music-controls-previous":
+						// this.cb.success("{\"message\": \"audio-music-controls-media-button-previous\"}");
 						this.sendStatusChange(PREV_MEDIA, null, null);
 						break;
 				}

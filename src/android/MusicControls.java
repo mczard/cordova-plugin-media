@@ -65,12 +65,12 @@ public class MusicControls {
 
 	private void registerBroadcaster(MusicControlsBroadcastReceiver mMessageReceiver){
 		final Context context = this.cordova.getActivity().getApplicationContext();
-		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("music-controls-previous"));
-		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("music-controls-pause"));
-		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("music-controls-play"));
-		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("music-controls-next"));
-		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("music-controls-media-button"));
-		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("music-controls-destroy"));
+		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("audio-music-controls-previous"));
+		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("audio-music-controls-pause"));
+		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("audio-music-controls-play"));
+		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("audio-music-controls-next"));
+		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("audio-music-controls-media-button"));
+		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter("audio-music-controls-destroy"));
 
 		// Listen for headset plug/unplug
 		context.registerReceiver((BroadcastReceiver)mMessageReceiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
@@ -121,7 +121,7 @@ public class MusicControls {
 		this.registerBroadcaster(mMessageReceiver);
 
 		
-		this.mediaSessionCompat = new MediaSessionCompat(context, "cordova-music-controls-media-session", null, this.mediaButtonPendingIntent);
+		this.mediaSessionCompat = new MediaSessionCompat(context, "cordova-audio-music-controls-media-session", null, this.mediaButtonPendingIntent);
 		this.mediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
 
@@ -133,7 +133,7 @@ public class MusicControls {
 		// Register media (headset) button event receiver
 		try {
 			this.mAudioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-			Intent headsetIntent = new Intent("music-controls-media-button");
+			Intent headsetIntent = new Intent("audio-music-controls-media-button");
 			this.mediaButtonPendingIntent = PendingIntent.getBroadcast(context, 0, headsetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 			this.registerMediaButtonEvent();
 		} catch (Exception e) {
@@ -142,7 +142,7 @@ public class MusicControls {
 		}
 
 		Intent startServiceIntent = new Intent(activity,MusicControlsNotificationKiller.class);
-		startServiceIntent.putExtra("notificationID",this.notificationID);
+		startServiceIntent.putExtra("mediaNotificationID",this.notificationID);
 		activity.bindService(startServiceIntent, mConnection, Context.BIND_AUTO_CREATE);
 	}
 

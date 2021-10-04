@@ -16,7 +16,7 @@ public class MusicControlsNotificationKiller extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		this.NOTIFICATION_ID=intent.getIntExtra("notificationID",1);
+		this.NOTIFICATION_ID=intent.getIntExtra("mediaNotificationID",1);
 		return mBinder;
 	}
 	@Override

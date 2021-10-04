@@ -194,7 +194,7 @@ public class MusicControlsNotification {
 		// set if the notification can be destroyed by swiping
 		if (infos.dismissable){
 			builder.setOngoing(false);
-			Intent dismissIntent = new Intent("music-controls-destroy");
+			Intent dismissIntent = new Intent("audio-music-controls-destroy");
 			PendingIntent dismissPendingIntent = PendingIntent.getBroadcast(context, 1, dismissIntent, 0);
 			builder.setDeleteIntent(dismissPendingIntent);
 		} else {
@@ -247,20 +247,20 @@ public class MusicControlsNotification {
 		if (infos.hasPrev){
 			/* Previous  */
 			nbControls++;
-			Intent previousIntent = new Intent("music-controls-previous");
+			Intent previousIntent = new Intent("audio-music-controls-previous");
 			PendingIntent previousPendingIntent = PendingIntent.getBroadcast(context, 1, previousIntent, 0);
 			builder.addAction(this.getResourceId(infos.prevIcon, android.R.drawable.ic_media_previous), "", previousPendingIntent);
 		}
 		if (infos.isPlaying){
 			/* Pause  */
 			nbControls++;
-			Intent pauseIntent = new Intent("music-controls-pause");
+			Intent pauseIntent = new Intent("audio-music-controls-pause");
 			PendingIntent pausePendingIntent = PendingIntent.getBroadcast(context, 1, pauseIntent, 0);
 			builder.addAction(this.getResourceId(infos.pauseIcon, android.R.drawable.ic_media_pause), "", pausePendingIntent);
 		} else {
 			/* Play  */
 			nbControls++;
-			Intent playIntent = new Intent("music-controls-play");
+			Intent playIntent = new Intent("audio-music-controls-play");
 			PendingIntent playPendingIntent = PendingIntent.getBroadcast(context, 1, playIntent, 0);
 			builder.addAction(this.getResourceId(infos.playIcon, android.R.drawable.ic_media_play), "", playPendingIntent);
 		}
@@ -268,14 +268,14 @@ public class MusicControlsNotification {
 		if (infos.hasNext){
 			/* Next */
 			nbControls++;
-			Intent nextIntent = new Intent("music-controls-next");
+			Intent nextIntent = new Intent("audio-music-controls-next");
 			PendingIntent nextPendingIntent = PendingIntent.getBroadcast(context, 1, nextIntent, 0);
 			builder.addAction(this.getResourceId(infos.nextIcon, android.R.drawable.ic_media_next), "", nextPendingIntent);
 		}
 		if (infos.hasClose){
 			/* Close */
 			nbControls++;
-			Intent destroyIntent = new Intent("music-controls-destroy");
+			Intent destroyIntent = new Intent("audio-music-controls-destroy");
 			PendingIntent destroyPendingIntent = PendingIntent.getBroadcast(context, 1, destroyIntent, 0);
 			builder.addAction(this.getResourceId(infos.closeIcon, android.R.drawable.ic_menu_close_clear_cancel), "", destroyPendingIntent);
 		}
