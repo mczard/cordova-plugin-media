@@ -178,12 +178,13 @@ public class MusicControls {
 	}
 
 	public void updateIsPlaying(boolean isPlaying) {
-		this.notification.updateIsPlaying(isPlaying);
+		boolean result = this.notification.updateIsPlaying(isPlaying);
 			
-		if (isPlaying) {
-			setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
-		} else {
-			setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED);
+		if (result) {
+			if (isPlaying)
+				setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
+			else
+				setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED);
 		}
 	}
 
