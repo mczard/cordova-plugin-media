@@ -309,7 +309,7 @@ Media.onStatus = function (id, msgType, value) {
                 }
             }
 
-            media._isPlaying = value === Media.MEDIA_RUNNING || value === Media.MEDIA_STARTING;
+            media._isPlaying = value === Media.MEDIA_RUNNING;
             break;
         case Media.MEDIA_DURATION:
             media._duration = value;
