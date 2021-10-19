@@ -156,10 +156,11 @@ public class AudioHandler extends CordovaPlugin {
         }
         else if (action.equals("pausePlayingAudio")) {
             this.pausePlayingAudio(args.getString(0));
-        }
-        else if (action.equals("stopPlayingAudio")) {
+        } else if (action.equals("stopPlayingAudio")) {
             this.stopPlayingAudio(args.getString(0));
-        } else if (action.equals("setVolume")) {
+        } else if (action.equals("removeNotification")) {
+            this.musicControls.destroy();
+        }  else if (action.equals("setVolume")) {
            try {
                this.setVolume(args.getString(0), Float.parseFloat(args.getString(1)));
            } catch (NumberFormatException nfe) {
@@ -296,7 +297,6 @@ public class AudioHandler extends CordovaPlugin {
      * @param id				The id of the audio player
      */
     private boolean release(String id) {
-        this.musicControls.destroy();
         AudioPlayer audio = players.remove(id);
         if (audio == null) {
             return false;

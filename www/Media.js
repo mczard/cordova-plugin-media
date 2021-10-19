@@ -128,6 +128,13 @@ Media.prototype.play = function (options) {
 };
 
 /**
+ * Start or resume playing audio file.
+ */
+ Media.prototype.removeNotification = function () {
+    exec(null, null, 'Media', 'removeNotification', [this.id, this.src]);
+};
+
+/**
  * Stop playing audio file.
  */
 Media.prototype.stop = function () {
