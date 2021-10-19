@@ -193,9 +193,14 @@ public class MusicControls {
 	}
 
 	public void destroy() {
-		this.notification.updateDismissable(true);
-		this.notification.destroy();
-		this.mMessageReceiver.stopListening();
+		if (this.notification != null) {
+			this.notification.updateDismissable(true);
+			this.notification.destroy();
+		}
+
+		if (this.mMessageReceiver != null) {
+			this.mMessageReceiver.stopListening();
+		}
 	}
 
 	public void onDestroy() {

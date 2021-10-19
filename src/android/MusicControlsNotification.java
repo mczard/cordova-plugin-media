@@ -118,6 +118,10 @@ public class MusicControlsNotification {
 
 	// Toggle the dismissable status
 	public void updateDismissable(boolean dismissable){
+		if (this.infos == null) {
+			return;
+		}
+		
 		this.infos.dismissable=dismissable;
 		this.createBuilder();
 		Notification noti = this.notificationBuilder.build();
