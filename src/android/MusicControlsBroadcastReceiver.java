@@ -16,9 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 	private CallbackContext cb;
 	private MusicControls musicControls;
+	private Timer timer = null;
 
     private static int NEXT_MEDIA = 101;
     private static int PREV_MEDIA = 102;
@@ -141,22 +145,108 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 				this.musicControls.destroyPlayerNotification();
 			} else {
 				LOG.d("MusicControls onReceive: ", message);
+
+				MusicControlsNotification notification = this.musicControls.notification;
+				AudioHandler handler = this.musicControls.handler;
+
 				switch (message) {
 					case "audio-music-controls-next":
 						// this.cb.success("{\"message\": \"audio-music-controls-media-button-next\"}");
 						this.sendStatusChange(NEXT_MEDIA, null, null);
+						// notification.next_down = true;
+						// notification.pause_down = false;
+						// notification.prev_down = false;
+						// notification.play_down = false;
+						// notification.refresh();
+
+						// if (this.timer != null) {
+						// 	this.timer.cancel();
+						// }
+
+						// this.timer = new Timer();
+						// this.timer.schedule(new TimerTask() {
+						// 	@Override
+						// 	public void run() {
+						// 		notification.next_down = false;
+						// 		notification.pause_down = false;
+						// 		notification.prev_down = false;
+						// 		notification.play_down = false;
+						// 		notification.refresh();
+						// 	}
+						// }, 200L); // 300 is the delay in millis
 						break;
 					case "audio-music-controls-pause":
 						// this.cb.success("{\"message\": \"audio-music-controls-media-button-pause\"}");
-						this.musicControls.handler.pausePlayingAudio(null);
+						notification.pause_down = true;
+						notification.next_down = false;
+						notification.prev_down = false;
+						notification.play_down = true;
+						handler.pausePlayingAudio(null);
+
+						if (this.timer != null) {
+							this.timer.cancel();
+						}
+
+						this.timer = new Timer();
+						this.timer.schedule(new TimerTask() {
+							@Override
+							public void run() {
+								notification.next_down = false;
+								notification.pause_down = false;
+								notification.prev_down = false;
+								notification.play_down = false;
+								notification.refresh();
+							}
+						}, 200L); // 300 is the delay in millis
 						break;
 					case "audio-music-controls-play":
 						// this.cb.success("{\"message\": \"audio-music-controls-media-button-play\"}");
-						this.musicControls.handler.startPlayingAudio(null, null);
+						notification.play_down = true;
+						notification.next_down = false;
+						notification.pause_down = true;
+						notification.prev_down = false;
+						handler.startPlayingAudio(null, null);
+
+						if (this.timer != null) {
+							this.timer.cancel();
+						}
+
+						this.timer = new Timer();
+						this.timer.schedule(new TimerTask() {
+							@Override
+							public void run() {
+								notification.next_down = false;
+								notification.pause_down = false;
+								notification.prev_down = false;
+								notification.play_down = false;
+								notification.refresh();
+							}
+						}, 200L); // 300 is the delay in millis
 						break;
 					case "audio-music-controls-previous":
 						// this.cb.success("{\"message\": \"audio-music-controls-media-button-previous\"}");
 						this.sendStatusChange(PREV_MEDIA, null, null);
+						// notification.prev_down = true;
+						// notification.next_down = false;
+						// notification.pause_down = false;
+						// notification.play_down = false;
+						// notification.refresh();
+
+						// if (this.timer != null) {
+						// 	this.timer.cancel();
+						// }
+
+						// this.timer = new Timer();
+						// this.timer.schedule(new TimerTask() {
+						// 	@Override
+						// 	public void run() {
+						// 		notification.next_down = false;
+						// 		notification.pause_down = false;
+						// 		notification.prev_down = false;
+						// 		notification.play_down = false;
+						// 		notification.refresh();
+						// 	}
+						// }, 200L); // 300 is the delay in millis
 						break;
 				}
 				// this.cb.success("{\"message\": \"" + message + "\"}");

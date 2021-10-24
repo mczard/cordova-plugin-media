@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MusicControls {
 	private MusicControlsBroadcastReceiver mMessageReceiver;
-	private MusicControlsNotification notification;
+	public MusicControlsNotification notification;
 	private MediaSessionCompat mediaSessionCompat;
 	private final int notificationID=7864;
 	private AudioManager mAudioManager;
