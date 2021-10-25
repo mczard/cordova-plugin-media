@@ -173,7 +173,7 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 						// 		notification.play_down = false;
 						// 		notification.refresh();
 						// 	}
-						// }, 200L); // 300 is the delay in millis
+						// }, 100L); // 300 is the delay in millis
 						break;
 					case "audio-music-controls-pause":
 						// this.cb.success("{\"message\": \"audio-music-controls-media-button-pause\"}");
@@ -197,7 +197,7 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 								notification.play_down = false;
 								notification.refresh();
 							}
-						}, 200L); // 300 is the delay in millis
+						}, 100L); // 300 is the delay in millis
 						break;
 					case "audio-music-controls-play":
 						// this.cb.success("{\"message\": \"audio-music-controls-media-button-play\"}");
@@ -221,7 +221,7 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 								notification.play_down = false;
 								notification.refresh();
 							}
-						}, 200L); // 300 is the delay in millis
+						}, 100L); // 300 is the delay in millis
 						break;
 					case "audio-music-controls-previous":
 						// this.cb.success("{\"message\": \"audio-music-controls-media-button-previous\"}");
@@ -246,7 +246,7 @@ public class MusicControlsBroadcastReceiver extends BroadcastReceiver {
 						// 		notification.play_down = false;
 						// 		notification.refresh();
 						// 	}
-						// }, 200L); // 300 is the delay in millis
+						// }, 100L); // 300 is the delay in millis
 						break;
 				}
 				// this.cb.success("{\"message\": \"" + message + "\"}");
