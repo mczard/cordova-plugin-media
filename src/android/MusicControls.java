@@ -77,17 +77,23 @@ public class MusicControls {
 	}
 
 	// Register pendingIntent for broacast
-	public void registerMediaButtonEvent(){
+	public void registerMediaButtonEvent() {
 
-		this.mediaSessionCompat.setMediaButtonReceiver(this.mediaButtonPendingIntent);
+		if (this.mediaSessionCompat != null) {
+			this.mediaSessionCompat.setMediaButtonReceiver(this.mediaButtonPendingIntent);
+		}
 
 		/*if (this.mediaButtonAccess && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
 		this.mAudioManager.registerMediaButtonEventReceiver(this.mediaButtonPendingIntent);
 		}*/
 	}
 
-	public void unregisterMediaButtonEvent(){
-		this.mediaSessionCompat.setMediaButtonReceiver(null);
+	public void unregisterMediaButtonEvent() {
+
+		if (this.mediaSessionCompat != null) {
+			this.mediaSessionCompat.setMediaButtonReceiver(null);
+		}
+
 		/*if (this.mediaButtonAccess && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
 		this.mAudioManager.unregisterMediaButtonEventReceiver(this.mediaButtonPendingIntent);
 		}*/
