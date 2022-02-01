@@ -62,7 +62,7 @@
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <service 
 		     android:name="org.apache.cordova.media.MusicControlsNotificationKiller"
-		     android:exported="true" >
+		     android:exported="false" >
 	    </service>
         </config-file>
 
