@@ -28,10 +28,10 @@ public class MusicControlsServiceConnection implements ServiceConnection {
             return;
         }
 
-        // if (isPlaying) {
+        if (isPlaying) {
             this.service.setForeground(notification);
-        // } else {
-        //     this.service.clearForeground();
-        // }
+        } else {
+            this.service.clearForeground();
+        }
     }
 }
