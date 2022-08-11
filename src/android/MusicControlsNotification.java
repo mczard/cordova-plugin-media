@@ -68,16 +68,18 @@ public class MusicControlsNotification {
 	}
 
 	// Show or update notification
-	public void updateNotification(MusicControlsInfos newInfos){
-		// Check if the cover has changed	
-		if (!newInfos.cover.isEmpty() && (this.infos == null || !newInfos.cover.equals(this.infos.cover))){
-			this.getBitmapCover(newInfos.cover);
-		}
-		this.infos = newInfos;
-		this.createBuilder();
-		Notification noti = this.notificationBuilder.build();
-		this.notificationManager.notify(this.notificationID, noti);
-		this.onNotificationUpdated(noti);
+	public void updateNotification(MusicControlsInfos newInfos) {
+		try {
+			// Check if the cover has changed
+			if (!newInfos.cover.isEmpty() && (this.infos == null || !newInfos.cover.equals(this.infos.cover))){
+				this.getBitmapCover(newInfos.cover);
+			}
+			this.infos = newInfos;
+			this.createBuilder();
+			Notification noti = this.notificationBuilder.build();
+			this.notificationManager.notify(this.notificationID, noti);
+			this.onNotificationUpdated(noti);
+		} catch (Exception ex) {}
 	}
 
 	public void updateCover(String newCover) {
