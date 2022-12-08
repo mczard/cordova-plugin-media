@@ -140,7 +140,10 @@ public class MusicControls {
 		try {
 			this.mAudioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 			Intent headsetIntent = new Intent("audio-music-controls-media-button");
-			this.mediaButtonPendingIntent = PendingIntent.getBroadcast(context, 0, headsetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			this.mediaButtonPendingIntent = PendingIntent.getBroadcast(
+				context, 0, headsetIntent,
+				Build.VERSION.SDK_INT >= 31 ? PendingIntent.FLAG_UPDATE_CURRENT | 33554432 : PendingIntent.FLAG_UPDATE_CURRENT
+			);
 			this.registerMediaButtonEvent();
 		} catch (Exception e) {
 			this.mediaButtonAccess=false;
